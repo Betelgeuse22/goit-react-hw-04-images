@@ -6,6 +6,7 @@ import { ImageGallery } from '../ImageGallery/ImageGallery';
 import { Button } from '../Button/Button';
 import { Loader } from '../Loader/Loader';
 import { Modal } from '../Modal/Modal';
+
 import { GlobalStyle } from '../GlobalStyle';
 import { AppStyle } from './App.styled';
 
@@ -22,7 +23,6 @@ export class App extends Component {
     images: null,
     error: null,
     currentImageUrl: null,
-    currentImageDescription: null,
   };
 
   componentDidUpdate(_, prevState) {
@@ -91,13 +91,11 @@ export class App extends Component {
 
   openModal = e => {
     const currentImageUrl = e.target.dataset.large;
-    const currentImageDescription = e.target.alt;
 
     if (e.target.nodeName === 'IMG') {
       this.setState(({ showModal }) => ({
         showModal: !showModal,
         currentImageUrl: currentImageUrl,
-        currentImageDescription: currentImageDescription,
       }));
     }
   };
@@ -110,7 +108,6 @@ export class App extends Component {
       isLoading,
       showModal,
       currentImageUrl,
-      currentImageDescription,
     } = this.state;
 
     return (
@@ -126,11 +123,7 @@ export class App extends Component {
         )}
 
         {showModal && (
-          <Modal
-            onClose={this.toggleModal}
-            currentImageUrl={currentImageUrl}
-            currentImageDescription={currentImageDescription}
-          />
+          <Modal onClose={this.toggleModal} currentImageUrl={currentImageUrl} />
         )}
         <GlobalStyle />
         <Toaster />

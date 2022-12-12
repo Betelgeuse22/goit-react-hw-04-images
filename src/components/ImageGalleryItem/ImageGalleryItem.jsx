@@ -2,20 +2,18 @@ import {
   ImageGalleryIt,
   ImageGalleryItemImage,
 } from './ImageGalleryItem.styled';
+import PropTypes from 'prop-types';
 
-export function ImageGalleryItem({
-  description,
-  smallImage,
-  largeImage,
-  openModal,
-}) {
+export function ImageGalleryItem({ smallImage, largeImage, openModal }) {
   return (
     <ImageGalleryIt onClick={openModal}>
-      <ImageGalleryItemImage
-        src={smallImage}
-        alt={description}
-        data-large={largeImage}
-      />
+      <ImageGalleryItemImage src={smallImage} alt="" data-large={largeImage} />
     </ImageGalleryIt>
   );
 }
+
+ImageGalleryItem.propTypes = {
+  openModal: PropTypes.func.isRequired,
+  smallImage: PropTypes.string.isRequired,
+  largeImage: PropTypes.string.isRequired,
+};

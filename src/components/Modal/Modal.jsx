@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import { createPortal } from 'react-dom';
 import { Backdrop, ModalWrap } from './Modal.styled';
+import PropTypes from 'prop-types';
 
 const modalRoot = document.querySelector('#modal-root');
 
@@ -26,19 +27,20 @@ export class Modal extends Component {
   };
 
   render() {
-    const { currentImageUrl, currentImageDescription } = this.props;
+    const { currentImageUrl } = this.props;
 
     return createPortal(
       <Backdrop onClick={this.handleClickBackdrop}>
         <ModalWrap>
-          <img
-            src={currentImageUrl}
-            alt={currentImageDescription}
-            loading="lazy"
-          />
+          <img src={currentImageUrl} alt="" />
         </ModalWrap>
       </Backdrop>,
       modalRoot
     );
   }
 }
+
+Modal.propTypes = {
+  onClose: PropTypes.func.isRequired,
+  currentImageUrl: PropTypes.string.isRequired,
+};

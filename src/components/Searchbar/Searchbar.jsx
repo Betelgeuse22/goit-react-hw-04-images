@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import toast from 'react-hot-toast';
 import { MdYoutubeSearchedFor } from 'react-icons/md';
+import PropTypes from 'prop-types';
 
 import {
   SearchbarHeader,
@@ -17,7 +18,6 @@ export class Searchbar extends Component {
   onChangeInput = evt => {
     this.setState({ query: evt.currentTarget.value });
   };
-
 
   onSubmitForm = evt => {
     evt.preventDefault();
@@ -40,7 +40,7 @@ export class Searchbar extends Component {
       <SearchbarHeader>
         <SearchForm onSubmit={this.onSubmitForm}>
           <SearchFormBtn type="submit">
-            <MdYoutubeSearchedFor size={30}/>
+            <MdYoutubeSearchedFor size={30} />
           </SearchFormBtn>
 
           <SearchFormInput
@@ -56,3 +56,7 @@ export class Searchbar extends Component {
     );
   }
 }
+
+Searchbar.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+};

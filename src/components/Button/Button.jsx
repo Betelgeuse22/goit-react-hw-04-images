@@ -1,5 +1,5 @@
-import {ButtonLoad} from './Button.styled'
-
+import { ButtonLoad } from './Button.styled';
+import PropTypes from 'prop-types';
 
 export function Button({ onNextFetch }) {
   return (
@@ -8,3 +8,7 @@ export function Button({ onNextFetch }) {
     </ButtonLoad>
   );
 }
+
+Button.propTypes = {
+  onNextFetch: PropTypes.func.isRequired,
+};
