@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { MdYoutubeSearchedFor } from 'react-icons/md';
 import PropTypes from 'prop-types';
@@ -10,20 +10,15 @@ import {
   SearchFormInput,
 } from './Searchbar.styled';
 
-export class Searchbar extends Component {
-  state = {
-    query: '',
+export function Searchbar({ onSubmit }) {
+  const [query, setQuery] = useState('');
+
+  const onChangeInput = e => {
+    setQuery(e.currentTarget.value);
   };
 
-  onChangeInput = evt => {
-    this.setState({ query: evt.currentTarget.value });
-  };
-
-  onSubmitForm = evt => {
-    evt.preventDefault();
-
-    const { onSubmit } = this.props;
-    const { query } = this.state;
+  const onSubmitForm = e => {
+    e.preventDefault();
 
     if (query.trim() === '') {
       toast.error('Enter a search term.');
@@ -33,28 +28,24 @@ export class Searchbar extends Component {
     onSubmit(query);
   };
 
-  render() {
-    const { query } = this.state;
+  return (
+    <SearchbarHeader>
+      <SearchForm onSubmit={onSubmitForm}>
+        <SearchFormBtn type="submit">
+          <MdYoutubeSearchedFor size={30} />
+        </SearchFormBtn>
 
-    return (
-      <SearchbarHeader>
-        <SearchForm onSubmit={this.onSubmitForm}>
-          <SearchFormBtn type="submit">
-            <MdYoutubeSearchedFor size={30} />
-          </SearchFormBtn>
-
-          <SearchFormInput
-            type="text"
-            autoComplete="off"
-            autoFocus
-            placeholder="Search images and photos"
-            value={query}
-            onChange={this.onChangeInput}
-          />
-        </SearchForm>
-      </SearchbarHeader>
-    );
-  }
+        <SearchFormInput
+          type="text"
+          autoComplete="off"
+          autoFocus
+          placeholder="Search images and photos"
+          value={query}
+          onChange={onChangeInput}
+        />
+      </SearchForm>
+    </SearchbarHeader>
+  );
 }
 
 Searchbar.propTypes = {
