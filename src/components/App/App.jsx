@@ -19,13 +19,19 @@ export function App() {
   const [totalImages, setTotalImages] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [images, setImages] = useState(null);
+  const [images, setImages] = useState([]);
   const [error, setError] = useState(null);
   const [currentImageUrl, setCurrentImageUrl] = useState(null);
 
   useEffect(() => {
-    setIsLoading(!isLoading);
+    if (query && page) {
+      fetchImg();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page, query]);
 
+  const fetchImg = () => {
+    setIsLoading(!isLoading);
     fetchImages(query, page)
       .then(({ hits, totalHits }) => {
         const imagesArray = hits.map(hit => ({
@@ -34,19 +40,23 @@ export function App() {
           largeImage: hit.largeImageURL,
         }));
 
-        setPage(1);
-        setImages(imagesArray);
         setImagesOnPage(imagesArray.length);
         setTotalImages(totalHits);
-        setImages(prevImages =>[...prevImages, ...imagesArray]);
+
+        setImages(prevImages => [...prevImages, ...imagesArray]);
         setImagesOnPage(imagesOnPage + imagesArray.length);
       })
       .catch(setError(error))
-      .finally(() => setIsLoading(!isLoading));
-  }, [error, images, imagesOnPage, isLoading, page, query]);
+      .finally(() => setIsLoading(false));
+  };
 
-  const getSearchRequest = query => {
-    setQuery(query);
+  const getSearchRequest = serchQuery => {
+    if (serchQuery === query) {
+      return;
+    }
+    setQuery(serchQuery);
+    setImages([]);
+    setPage(1);
   };
 
   const onNextFetch = () => {
