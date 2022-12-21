@@ -24,14 +24,8 @@ export function App() {
   const [currentImageUrl, setCurrentImageUrl] = useState(null);
 
   useEffect(() => {
-    if (query && page) {
-      fetchImg();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, query]);
+    if (!query) return;
 
-  const fetchImg = () => {
-    setIsLoading(!isLoading);
     fetchImages(query, page)
       .then(({ hits, totalHits }) => {
         const imagesArray = hits.map(hit => ({
@@ -40,15 +34,15 @@ export function App() {
           largeImage: hit.largeImageURL,
         }));
 
-        setImagesOnPage(imagesArray.length);
+        setImagesOnPage(prevState => prevState + imagesArray.length);
         setTotalImages(totalHits);
-
         setImages(prevImages => [...prevImages, ...imagesArray]);
-        setImagesOnPage(imagesOnPage + imagesArray.length);
       })
       .catch(setError(error))
       .finally(() => setIsLoading(false));
-  };
+
+    fetchImages();
+  }, [error, page, query]);
 
   const getSearchRequest = serchQuery => {
     if (serchQuery === query) {
